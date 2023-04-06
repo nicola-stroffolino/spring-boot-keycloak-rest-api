@@ -20,10 +20,12 @@ import java.util.stream.Stream
 // Source: https://medium.com/geekculture/using-keycloak-with-spring-boot-3-0-376fa9f60e0b
 @Component
 class JwtAuthConverter : Converter<Jwt, AbstractAuthenticationToken> {
-    private val logger = LoggerFactory.getLogger(JwtAuthConverter::class.java)
     private val jwtGrantedAuthoritiesConverter = JwtGrantedAuthoritiesConverter()
 
-    var properties = JwtAuthConverterProperties()
+    @Value("\${jwt.auth.converter.resource-id}")
+    private var resourceId: String? = null
+    @Value("\${jwt.auth.converter.principal-attribute}")
+    private var principalAttribute: String? = null
 
     override fun convert(source: Jwt): AbstractAuthenticationToken? {
         val authorities: Collection<GrantedAuthority> = Stream.concat(
@@ -31,16 +33,12 @@ class JwtAuthConverter : Converter<Jwt, AbstractAuthenticationToken> {
             extractResourceRoles(source).stream()
         ).collect(Collectors.toSet())
 
-        logger.info("The authorities are: ${getPrincipalClaimName(source)}")
-        logger.info("The resourceID is: ${properties.resourceId}")
-        logger.info("The principal attribute is: ${properties.principalAttribute}")
-
         return JwtAuthenticationToken(source, authorities, getPrincipalClaimName(source))
     }
 
     private fun extractResourceRoles(jwt: Jwt): Collection<GrantedAuthority> {
         val resourceAccess: Map<String, Any>? = jwt.getClaim("resource_access")
-        val resource: Map<*, *>? = resourceAccess?.get(properties.resourceId) as Map<*, *>?
+        val resource: Map<*, *>? = resourceAccess?.get(resourceId) as Map<*, *>?
         val resourceRoles: Collection<*>? = resource?.get("roles") as Collection<*>?
 
         return if (resourceAccess == null || resource == null || resourceRoles == null) setOf()
@@ -50,11 +48,9 @@ class JwtAuthConverter : Converter<Jwt, AbstractAuthenticationToken> {
     }
 
     private fun getPrincipalClaimName(jwt: Jwt): String {
-        logger.info("The jwt is $jwt")
-        var claimName = JwtClaimNames.SUB
-        if (properties.principalAttribute != null) {
-            claimName = properties.principalAttribute as String
-            logger.info("The claim name is $claimName")
+        var claimName: String = JwtClaimNames.SUB
+        if (resourceId != null) {
+            claimName = principalAttribute.toString()
         }
         return jwt.getClaim(claimName)
     }

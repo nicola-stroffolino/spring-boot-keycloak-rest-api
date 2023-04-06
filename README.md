@@ -106,7 +106,7 @@ We can do so by performing a **POST** request to the Token Endpoint : [http://lo
 
 This request has to have a `x-www-form-urlencoded` body formatted like so :
 
-![Token POST Request](img/Token%20Post%20Request.png)
+![Token POST Request](img/Token%20POST%20Request.png)
 
 As you can see here we're trying to fetch an **Access Token** for the  `user1` user trying to authenticate with his `12345` password. When the authentication is proven successful the Keycloak server will respond with a **JSON** encoded body that should look like this :
 
@@ -135,6 +135,90 @@ The only thing the request has to have is the `id_token_hint` query parameter at
 
 ![Logout Request](img/Logout%20Request.png)
 
-In the parameters we can also specify the `post_logout_redirect_uri` which is page the user will be redirected to after the logout.
+In the parameters we can also specify the `post_logout_redirect_uri` which is the page the user will be redirected to after the logout.
+
+### Troubleshooting Login - Logout
+
+To check if we did everything correctly we can perform a login request for one of the users, e.g. `user1`, to the Token Endpoint and in our Keycloak Administration Console under `Clients > web-app-1 > Sessions` we can see that it should have created a new session for `user1` :
+
+![user1 Session|500](img/user1%20Session.png)
+
+And then if we perform a logout request we should see the sessions tab emptied of the `user1` session :
+
+![No Sessions|500](img/No%20Sessions.png)
+
+(These screenshots were made in a very compact window btw)
+
+## Setting up the Spring Boot Project
+I chose to setup my project in **Gradle - Kotlin** in **Spring Boot 3.0.5** using the **Spring Web**, **Spring Security** and **OAuth2 Resource Server** dependencies and I'll be using the [IntellijIDEA](https://www.jetbrains.com/idea/) IDE.
+
+I changed the `application.properties` file to `application.yml` file as the YAML version is more concise and more human-readable :
+
+```yaml
+spring:  
+  application:  
+    name: springboot-keycloak  
+  security:  
+    oauth2:  
+      resourceserver:  
+        jwt:  
+          issuer-uri: http://localhost:8081/realms/SpringBootKeycloak  
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs  
+  
+jwt:  
+  auth:  
+    converter:  
+      resource-id: web-app-1  
+      principal-attribute: preferred_username  
+  
+logging:  
+  level:  
+    org.springframework.security: DEBUG  
+  
+server:  
+  port: '8080'  
+  servlet:  
+    context-path: /api
+```
+
+### The Controller
+As we are creating a REST API we have to setup a <span style="color:gold">@RestController</span> that for each URL will provide us with a different **Response Body** :
+
+```kotlin
+@RestController  
+class TestController {  
+    @get:GetMapping("/anonymous")  
+    val anonymous: ResponseEntity<String>  
+        get() = ResponseEntity.ok("Hello Anonymous")  
+  
+    @GetMapping("/admin")  
+    fun getAdmin(principal: Principal): ResponseEntity<String> {  
+        val token = principal as JwtAuthenticationToken  
+        val userName = token.tokenAttributes["name"] as String?  
+        val userEmail = token.tokenAttributes["email"] as String?  
+        return ResponseEntity.ok(
+	        "Hello Admin \nUser Name : $userName\nUser Email : $userEmail"
+	    )  
+    }  
+  
+    @GetMapping("/user")  
+    fun getUser(principal: Principal): ResponseEntity<String> {  
+        val token = principal as JwtAuthenticationToken  
+        val userName = token.tokenAttributes["name"] as String?  
+        val userEmail = token.tokenAttributes["email"] as String?  
+        return ResponseEntity.ok(
+	        "Hello User \nUser Name : $userName\nUser Email : $userEmail"
+        )
+    }  
+}
+```
+
+### The Security Config
+
+
+
+
+
+
 
 

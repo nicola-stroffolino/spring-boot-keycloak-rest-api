@@ -8,16 +8,17 @@ import java.security.Principal
 
 @RestController
 class TestController {
-    @get:GetMapping("/anonymous")
-    val anonymous: ResponseEntity<String>
-        get() = ResponseEntity.ok("Hello Anonymous")
+    @GetMapping("/anonymous")
+    fun anonymous() = ResponseEntity.ok("Hello Anonymous")
 
     @GetMapping("/admin")
     fun getAdmin(principal: Principal): ResponseEntity<String> {
         val token = principal as JwtAuthenticationToken
         val userName = token.tokenAttributes["name"] as String?
         val userEmail = token.tokenAttributes["email"] as String?
-        return ResponseEntity.ok("Hello Admin \nUser Name : $userName\nUser Email : $userEmail")
+        return ResponseEntity.ok(
+            "Hello Admin \nUser Name : $userName\nUser Email : $userEmail"
+        )
     }
 
     @GetMapping("/user")
@@ -25,6 +26,8 @@ class TestController {
         val token = principal as JwtAuthenticationToken
         val userName = token.tokenAttributes["name"] as String?
         val userEmail = token.tokenAttributes["email"] as String?
-        return ResponseEntity.ok("Hello User \nUser Name : $userName\nUser Email : $userEmail")
+        return ResponseEntity.ok(
+            "Hello User \nUser Name : $userName\nUser Email : $userEmail"
+        )
     }
 }
