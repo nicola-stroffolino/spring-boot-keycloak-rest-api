@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated
 @ConfigurationProperties(prefix = "jwt.auth.converter")
 @Component
 data class JwtAuthConverterProperties (
-    var resourceId: String = "springboot-keycloak-client",
+    var resourceId: String = "web-app-1",
     var principalAttribute: String = "preferred_username"
 )
 

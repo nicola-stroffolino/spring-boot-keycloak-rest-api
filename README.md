@@ -42,7 +42,7 @@ Fill in the "name" field with the name of your realm, I went with `SpringBootKey
 Next step is to create a **Client** by navigating onto the "Client" item in the left sidebar.
 As stated by Keycloak, Clients are applications and services that can request authentication of a user, therefore its essential to associate one with our application.
 
-Once into the Clients tab you will be presented with a list of active clients and a "Create Client" button at the top. Click it and insert the "Client ID" which is essential to let our application know to which client we are requesting access to, and i went with `web-app-1`.
+Once into the Clients tab you will be presented with a list of active clients and a "Create Client" button at the top. Click it and insert the "Client ID" which is essential to let our application know to which client we are requesting access to. The name I went with is `web-app-1`.
 You can also provide a formal name and a description which is optional.
 
 ![Keycloak Client Creation Page 1](img/Keycloak%20Client%20Creation%20Page%201.png)
@@ -94,4 +94,47 @@ I created 3 users which informations are laid out like this :
 And we're all setup!
 
 ## Exploring Keycloak Endpoints
-Some more advanced aspects of Keycloak are the various endpoints that it offers.
+Some more advanced aspects of Keycloak are the various endpoints that it offers, and it is thanks to them that we can perform many authentication processes remotely. We can check all the existing endpoints by navigating to **Realm Settings** on the left sidebar and then [OpenID Endpoint Configuration](http://localhost:8081/realms/SpringBootKeycloak/.well-known/openid-configuration) in the **Endpoints** field.
+
+To access all the Keycloak and our application endpoints we we'll be using [Postman](https://www.postman.com/), a very handful free software capable of simulating internet requests.
+
+### Accessing the Token Endpoint
+
+This endpoint will allow us to perform a login request into our web application and retrieve the **Access**, **Refresh** and **ID** tokens, that contain all the information about our authentication.
+
+We can do so by performing a **POST** request to the Token Endpoint : [http://localhost:{port}/realms/{realmName}/protocol/openid-connect/token](http://localhost:8081/realms/SpringBootKeycloak/protocol/openid-connect/token)
+
+This request has to have a `x-www-form-urlencoded` body formatted like so :
+
+![Token POST Request](img/Token%20Post%20Request.png)
+
+As you can see here we're trying to fetch an **Access Token** for the  `user1` user trying to authenticate with his `12345` password. When the authentication is proven successful the Keycloak server will respond with a **JSON** encoded body that should look like this :
+
+![Token POST Response](img/Token%20POST%20Response.png)
+
+And if we copy the `access_token` value and decode it using the [Jwt.io](https://jwt.io) website we can see all the information about the granted authorization :
+
+![Decoded Access Token](img/Decoded%20Access%20Token.png)
+
+There the field `realm_access` refers to the Realm Roles the user has and the `resource_access` field refers to the Client Roles (as you can see the `user1` has the `user` role in `web-app-1`).
+
+### Utilizing the Refresh Token
+
+In the Postman response to the Token Endpoint request we can see that there's a `expires_in` field, that indicates the validation of the **Access Token**. If we want to continue accessing the resource without initiating a new authentication we can use the **Refresh Token** in a new **POST** request.
+
+The POST request has to be performed to the same Keycloak Token Endpoint with a `x-www-form-urlencoded` body formatted like so :
+
+![Refresh Token POST Request](img/Refresh%20Token%20POST%20Request.png)
+
+And you will receive a similar response to the past one, with some new freshly validated **Access** and **ID** tokens.
+
+### Performing the Logout
+To initiate the logout procedure you have to perform a **GET** request to the Keycloak Logout Endpoint : [http://localhost:{port}/realms/{realmName}/protocol/openid-connect/logout](http://localhost:8081/realms/SpringBootKeycloak/protocol/openid-connect/logout)
+
+The only thing the request has to have is the `id_token_hint` query parameter attached to it filled with the **Id Token** :
+
+![Logout Request](img/Logout%20Request.png)
+
+In the parameters we can also specify the `post_logout_redirect_uri` which is page the user will be redirected to after the logout.
+
+

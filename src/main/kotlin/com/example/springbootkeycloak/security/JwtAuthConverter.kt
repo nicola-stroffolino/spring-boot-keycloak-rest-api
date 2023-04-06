@@ -23,7 +23,6 @@ class JwtAuthConverter : Converter<Jwt, AbstractAuthenticationToken> {
     private val logger = LoggerFactory.getLogger(JwtAuthConverter::class.java)
     private val jwtGrantedAuthoritiesConverter = JwtGrantedAuthoritiesConverter()
 
-    @Autowired
     var properties = JwtAuthConverterProperties()
 
     override fun convert(source: Jwt): AbstractAuthenticationToken? {
