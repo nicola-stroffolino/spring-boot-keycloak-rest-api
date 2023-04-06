@@ -28,8 +28,8 @@ Its going to be the Administration Console that will allow us to manage the Keyc
 The first step to manage one or more applications is creating a **Realm**. A Realm is basically a group of clients and users under the same "roof" to which are applied a common set of rules.
 
 <div float=left>
-<img src="/img/Keycloak Administration Console.png" width="50%"/>
-<img src="/img/Keycloak Realm List.png" width="50%"/>
+<img src="/img/Keycloak Administration Console.png" width="100"/>
+<img src="/img/Keycloak Create Realm.png" width="100"/>
 </div>
 
 
