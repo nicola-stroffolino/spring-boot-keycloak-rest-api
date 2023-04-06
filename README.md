@@ -79,19 +79,19 @@ Obviously there will be users to assign our roles to, and we can either create t
 
 We can create users by navigating to **Users** in the left sidebar and "Create new user" and fill out fields with the user information. Once done navigate to the **Credentials** tab and "Set password" and in there its <u>important</u> that you turn off the "Temporary" tick. Lastly navigate to the **Role Mappings** tab and assign the desired roles to each user.
 
-We created 3 users which informations are laid out like this :
+I created 3 users which informations are laid out like this :
 
 | Username         | User1            | User2                                            | GlobalAdmin     |
-| ---------------- | ---------------- | ------------------------------------------------ | --------------- |
+|:---------------- |:---------------- |:------------------------------------------------ |:--------------- |
 | Email            | user1@gmail.com  | user2@gmail.com                                  | admin@gmail.com |
 | Email Verified   | Yes              | Yes                                              | Yes             |
 | First Name       | User             | User                                             | Admin           |
 | Last Name        | First            | Second                                           | Global          |
 | Required Actions | none             | none                                             | none            |
 | Password         | 12345            | 54321                                            | admin           |
-| Roles            | `web-app-1` user | <div>`web-app-1` user<br>`web-app-1` admin</div> | GLOBAL_ADMIN                |
+| Roles            | `web-app-1` user | <div>`web-app-1` user<br>`web-app-1` admin</div> | GLOBAL_ADMIN    |
 
 And we're all setup!
 
 ## Exploring Keycloak Endpoints
-A more advanced aspect of Keycloak
+Some more advanced aspects of Keycloak are the various endpoints that it offers.
