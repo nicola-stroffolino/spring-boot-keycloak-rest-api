@@ -17,16 +17,19 @@ Once the compressed file is downloaded you can just unzip it and run the `kc.bat
 
 My command would result : `bin/kc.sh start-dev --http-port=8081`
 
-Now if we reach to the http://localhost:8081 we should be presented with this :
+Now if we reach to the http://localhost:8081 URL we should be presented with this :
 
 ![Welcome to Keycloak](./img/Welcome%20to%20Keycloak.png)
 
-There we can access the **Administration Console**, just put some random values in the login form presented and those will be your credentials to access said console and manage the server.
+There we have to access the **Administration Console** to which we have to register with username and password credentials.
+Its going to be the Administration Console that will allow us to manage the Keycloak server.
 
 ### Creating a Realm
 The first step to manage one or more applications is creating a **Realm**. A Realm is basically a group of clients and users under the same "roof" to which are applied a common set of rules.
 
+<img align="left" src="/img/Keycloak Administration Console.png" width="50%"/>
+<img align="left" src="/img/Keycloak Realm List.png" width="50%"/>
 
-<img align="left" src="/img/Keycloak%20Administration%20Console.png" width="200"/>
+Click on the **master** option at the top of left menu, and there it will allow you to create a new realm. 
+Fill in the "name" field with the name of your realm, I went with `SpringBootKeycloak`, and then click "Create".
 
-Click on the **master** option at the top of left menu, and there it will allow you to create a new realm.
