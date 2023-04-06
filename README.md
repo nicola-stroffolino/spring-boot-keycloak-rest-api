@@ -27,7 +27,7 @@ There we can access the **Administration Console**, just put some random values 
 The first step to manage one or more applications is creating a **Realm**. A Realm is basically a group of clients and users under the same "roof" to which are applied a common set of rules.
 
 <span>
-<img src="/img/Keycloak%20Administration%20Console.png" width="200"/>
+<span><img src="/img/Keycloak%20Administration%20Console.png" width="200"/></span>
 
-Click on the **master** option at the top of left menu, and there it will allow you to create a new realm.
+<span> on the **master** option at the top of left menu, and there it will allow you to create a new realm.</span>
 </span>
