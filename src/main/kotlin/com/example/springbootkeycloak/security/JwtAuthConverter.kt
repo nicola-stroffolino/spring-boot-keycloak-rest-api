@@ -1,7 +1,10 @@
 package com.example.springbootkeycloak.security
 
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.converter.Converter
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
@@ -20,11 +23,8 @@ class JwtAuthConverter : Converter<Jwt, AbstractAuthenticationToken> {
     private val logger = LoggerFactory.getLogger(JwtAuthConverter::class.java)
     private val jwtGrantedAuthoritiesConverter = JwtGrantedAuthoritiesConverter()
 
-    @Value("\${jwt.auth.converter.resource-id}")
-    private var resourceId: String? = "springboot-keycloak-client"
-
-    @Value("\${jwt.auth.converter.principal-attribute}")
-    private var principalAttribute: String? = "preferred_username"
+    @Autowired
+    var properties = JwtAuthConverterProperties()
 
     override fun convert(source: Jwt): AbstractAuthenticationToken? {
         val authorities: Collection<GrantedAuthority> = Stream.concat(
@@ -33,15 +33,15 @@ class JwtAuthConverter : Converter<Jwt, AbstractAuthenticationToken> {
         ).collect(Collectors.toSet())
 
         logger.info("The authorities are: ${getPrincipalClaimName(source)}")
-        logger.info("The resourceID is: ${resourceId}")
-        logger.info("The principal attribute is: ${principalAttribute}")
+        logger.info("The resourceID is: ${properties.resourceId}")
+        logger.info("The principal attribute is: ${properties.principalAttribute}")
 
         return JwtAuthenticationToken(source, authorities, getPrincipalClaimName(source))
     }
 
     private fun extractResourceRoles(jwt: Jwt): Collection<GrantedAuthority> {
         val resourceAccess: Map<String, Any>? = jwt.getClaim("resource_access")
-        val resource: Map<*, *>? = resourceAccess?.get(resourceId) as Map<*, *>?
+        val resource: Map<*, *>? = resourceAccess?.get(properties.resourceId) as Map<*, *>?
         val resourceRoles: Collection<*>? = resource?.get("roles") as Collection<*>?
 
         return if (resourceAccess == null || resource == null || resourceRoles == null) setOf()
@@ -53,8 +53,8 @@ class JwtAuthConverter : Converter<Jwt, AbstractAuthenticationToken> {
     private fun getPrincipalClaimName(jwt: Jwt): String {
         logger.info("The jwt is $jwt")
         var claimName = JwtClaimNames.SUB
-        if (principalAttribute != null) {
-            claimName = principalAttribute as String
+        if (properties.principalAttribute != null) {
+            claimName = properties.principalAttribute as String
             logger.info("The claim name is $claimName")
         }
         return jwt.getClaim(claimName)

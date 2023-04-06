@@ -4,7 +4,7 @@
 Configuring a Spring Boot REST API that utilizes Keycloak as an Authorization server. The general idea is utilizing Keycloak as a way to obtain Access, Refresh and ID tokens that can then be used to authorize request to protected content in our resource server.
 
 ## The Advantages of Keycloak
-In the versions of Spring Boot 2.x and onwards the best way to integrate Keycloak in our application was with the use of the **Keycloak Client Adapter** library.
+In the versions of Spring Boot 2.x and onwards the best way to integrate Keycloak in our application was with the use of the [Keycloak Client Adapter](https://mvnrepository.com/artifact/org.keycloak/keycloak-spring-security-adapter) library.
 
 Unfortunately with the advent of Spring Boot 3 most of its classes and method became deprecated, but it's not so much of a problem, as Keycloak still provides a multitude of **endpoints** that can allow us to manually execute authentication tasks.
 
@@ -20,3 +20,10 @@ My command would result : `bin/kc.sh start-dev --http-port=8081`
 Now if we reach to the http://localhost:8081 we should be presented with this :
 
 ![Welcome to Keycloak](./img/Welcome%20to%20Keycloak.png)
+
+There we can access the **Administration Console**, just put some random values in the login form presented and those will be your credentials to access said console and manage the server.
+
+### Creating a Realm
+The first step to manage one or more applications is creating a **Realm**. A Realm is basically a group of clients and users under the same "roof" to which are applied a common set of rules.
+
+<img src="/img/Keycloak%20Administration%20Console.png" alt="error"/>
