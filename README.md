@@ -27,10 +27,11 @@ Its going to be the Administration Console that will allow us to manage the Keyc
 ### Creating a Realm
 The first step to manage one or more applications is creating a **Realm**. A Realm is basically a group of clients and users under the same "roof" to which are applied a common set of rules.
 
-<div width="100%">
-<img align="left" src="/img/Keycloak Administration Console.png" width="50%"/>
-<img align="left" src="/img/Keycloak Realm List.png" width="50%"/>
+<div float=left>
+<img src="/img/Keycloak Administration Console.png" width="50%"/>
+<img src="/img/Keycloak Realm List.png" width="50%"/>
 </div>
+
 
 Click on the **master** option at the top of left menu, and there it will allow you to create a new realm. 
 Fill in the "name" field with the name of your realm, I went with `SpringBootKeycloak`, and then click "Create".
