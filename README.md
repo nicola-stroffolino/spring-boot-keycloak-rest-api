@@ -28,9 +28,8 @@ Its going to be the Administration Console that will allow us to manage the Keyc
 The first step to manage one or more applications is creating a **Realm**. A Realm is basically a group of clients and users under the same "roof" to which are applied a common set of rules. We can also image it as a whole organization that can manage a wide range of web apps (named **Clients**).
 
 <div float=left align="center">
-<img src="/img/Keycloak Administration Console.png" alt="Left Sidebar" width="20%"/>
-<span style="margin:30px"></span>
-<img src="/img/Keycloak Create Realm.png" alt="Realms List" width="20%"/>
+<img src="/img/Keycloak Administration Console.png" alt="Left Sidebar" width="20%" style="margin-right:15px"/>
+<img src="/img/Keycloak Create Realm.png" alt="Realms List" width="20%" style="margin-left:15px"/>
 </div>
 
 Click on the **master** option at the top of left menu, and there it will allow you to create a new realm. 
@@ -318,9 +317,9 @@ To test the application, in my case using **Postman**, we need to declare 3 diff
 
 Here's how the 3 requests would look in Postman :
 <div align="center">
-<img src="/img/GET Anonymous.png" alt="GET Anonymous" width="30%"/>
-<img src="/img/GET User.png" alt="GET User" width="30%"/>
-<img src="/img/GET Admin.png" alt="GET Admin" width="30%"/>
+<img src="/img/GET Anonymous.png" alt="GET Anonymous" width="33%"/>
+<img src="/img/GET User.png" alt="GET User" width="33%"/>
+<img src="/img/GET Admin.png" alt="GET Admin" width="33%"/>
 </div>
 
 
