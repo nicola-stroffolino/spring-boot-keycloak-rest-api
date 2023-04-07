@@ -150,9 +150,12 @@ And then if we perform a logout request we should see the sessions tab emptied o
 (These screenshots were made in a very compact window btw)
 
 ## Setting up the Spring Boot Project
-I chose to setup my project in **Gradle - Kotlin** in **Spring Boot 3.0.5** using the **Spring Web**, **Spring Security** and **OAuth2 Resource Server** dependencies and I'll be using the [IntellijIDEA](https://www.jetbrains.com/idea/) IDE.
+I chose to setup my project in **Gradle - Kotlin** in **Spring Boot 3.0.5** using the **Spring Web**, **Spring Security** and **OAuth2 Resource Server** dependencies. My IDE of choice was [IntellijIDEA](https://www.jetbrains.com/idea/).
 
-I changed the `application.properties` file to `application.yml` file as the YAML version is more concise and more human-readable :
+![Spring Initializr](img/Spring%20Initializr.png)
+
+### Application Properties
+I changed the `application.properties` file to `application.yml` file as I think the YAML version is much more concise and more human-readable :
 
 ```yaml
 spring:  
@@ -181,24 +184,34 @@ server:
     context-path: /api
 ```
 
+Where :
+- **issuer-uri** $\rightarrow$ Is the issuer defined in the **OpenID Endpoint Configuration** described in the [Exploring Keycloak Endpoints](#Exploring%20Keycloak%20Endpoints) chapter. This will be the endpoint that our application will use to validate the JWT tokens.
+  >[!warning]
+  >The authorization server, in this case Keycloak, **must** be up and running, or else you would not even be able to start the application.
+
+- **jwk-set-uri** $\rightarrow$ Is the URI of the the authorization server's endpoint exposing public keys, but it's optional, the only difference with the **issuer-uri** is that the application would actually start if we only specify this field. As you can see this uses the base URI of the issuer uri.
+- **resource-id** $\rightarrow$ Is basically just the client ID. It will be user later on to specify to which web app the resource roles belong to, and as you can see in the [Accessing the Token Endpoint](#Accessing%20the%20Token%20Endpoint) chapter in the JWT decoded token we can see that we're exposing only the resource roles of the `web-app-1` client.
+- **principal-attribute** $\rightarrow$ Is the parameter from which we will be obtaining the authenticated user username.
+
+The other attributes should be pretty self explanatory.
+
 ### The Controller
-As we are creating a REST API we have to setup a <span style="color:gold">@RestController</span> that for each URL will provide us with a different **Response Body** :
+As we are creating a REST API we have to setup a <span style="color:gold">@RestController</span> that for each URL will provide us with a different `ResponseBody` :
 
 ```kotlin
 @RestController  
 class TestController {  
-    @get:GetMapping("/anonymous")  
-    val anonymous: ResponseEntity<String>  
-        get() = ResponseEntity.ok("Hello Anonymous")  
+    @GetMapping("/anonymous")  
+    fun anonymous() = ResponseEntity.ok("Hello Anonymous")  
   
     @GetMapping("/admin")  
     fun getAdmin(principal: Principal): ResponseEntity<String> {  
         val token = principal as JwtAuthenticationToken  
         val userName = token.tokenAttributes["name"] as String?  
         val userEmail = token.tokenAttributes["email"] as String?  
-        return ResponseEntity.ok(
-	        "Hello Admin \nUser Name : $userName\nUser Email : $userEmail"
-	    )  
+        return ResponseEntity.ok(  
+            "Hello Admin \nUser Name : $userName\nUser Email : $userEmail"  
+        )  
     }  
   
     @GetMapping("/user")  
@@ -206,14 +219,99 @@ class TestController {
         val token = principal as JwtAuthenticationToken  
         val userName = token.tokenAttributes["name"] as String?  
         val userEmail = token.tokenAttributes["email"] as String?  
-        return ResponseEntity.ok(
-	        "Hello User \nUser Name : $userName\nUser Email : $userEmail"
-        )
+        return ResponseEntity.ok(  
+            "Hello User \nUser Name : $userName\nUser Email : $userEmail"  
+        )  
     }  
 }
 ```
 
-### The Security Config
+For the **/admin** and **/user** paths we can see that we're extracting the user information from the `Principal` given by the security context and printing it subsequently in a `ResponseEntity.ok` (Code 200) body. This is still a very basic approach to the `ResponseBody` of a REST API and it's just for the sake of demonstration.
+
+### The JWT Authentication Converter
+With this JWT Converter we'll be creating some custom claims in our JWT that will contain the **user roles** in the list of the granted authorities, so that they will be able to be recognized by our future [Security Configuration](#The%20Security%20Configuration).
+
+```kotlin
+@Component  
+class JwtAuthConverter : Converter<Jwt, AbstractAuthenticationToken> {  
+    private val jwtGrantedAuthoritiesConverter = JwtGrantedAuthoritiesConverter()  
+  
+    @Value("\${jwt.auth.converter.resource-id}")  
+    private var resourceId: String? = null  
+    @Value("\${jwt.auth.converter.principal-attribute}")  
+    private var principalAttribute: String? = null  
+  
+    override fun convert(source: Jwt): AbstractAuthenticationToken? {  
+        val authorities: Collection<GrantedAuthority> = Stream.concat(  
+            jwtGrantedAuthoritiesConverter.convert(source)!!.stream(),  
+            extractResourceRoles(source).stream()  
+        ).collect(Collectors.toSet())  
+          
+        return JwtAuthenticationToken(source, authorities, getPrincipalClaimName(source))  
+    }  
+  
+    private fun extractResourceRoles(jwt: Jwt): Collection<GrantedAuthority> {  
+        val resourceAccess: Map<String, Any>? = jwt.getClaim("resource_access")  
+        val resource: Map<*, *>? = resourceAccess?.get(resourceId) as Map<*, *>?  
+        val resourceRoles: Collection<*>? = resource?.get("roles") as Collection<*>?  
+  
+        return if (resourceAccess == null || resource == null || resourceRoles == null) setOf()  
+        else resourceRoles.stream()  
+            .map { role -> SimpleGrantedAuthority("ROLE_$role") }  
+            .collect(Collectors.toSet())  
+    }  
+  
+    private fun getPrincipalClaimName(jwt: Jwt): String {  
+        var claimName: String = JwtClaimNames.SUB  
+        if (resourceId != null) {  
+            claimName = principalAttribute.toString()  
+        }  
+        return jwt.getClaim(claimName)  
+    }  
+}
+```
+
+This script was not originally designed by me, but gently provided by our saviour Yasas Sandeepa in his [Blog Post](https://medium.com/geekculture/using-keycloak-with-spring-boot-3-0-376fa9f60e0b) in Java language, that I then transcribed in Kotlin language.
+
+The script is by no means intuitive (not even for me really), but the main thing this class is doing is taking the JWT of the **Access Token**, extracting the resource roles associated with our web app, the username of the user, inserting it and returning it as a new `JwtAuthenticationToken` class instance.
+
+### The Security Configuration
+This is where we'll be able to manage who is going to be allowed to access each endpoint of our REST API. The script is the following :
+
+```kotlin
+@Configuration  
+@EnableWebSecurity  
+class SecurityConfig @Autowired constructor(  
+    private val jwtAuthConverter: JwtAuthConverter  
+) {  
+    private val ADMIN = "admin"  
+    private val USER = "user"  
+  
+    @Bean  
+    @Throws(Exception::class)  
+    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {  
+        http.authorizeHttpRequests()  
+            .requestMatchers(HttpMethod.GET, "/anonymous").permitAll()        // #1
+            .requestMatchers(HttpMethod.GET, "/admin").hasRole(ADMIN)         // #2
+            .requestMatchers(HttpMethod.GET, "/user").hasAnyRole(ADMIN, USER) // #3  
+			.anyRequest().authenticated()                                     // #4
+        http.oauth2ResourceServer()
+            .jwt()  
+			.jwtAuthenticationConverter(jwtAuthConverter)                     // #5  
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  
+        return http.build()  
+    }  
+}
+```
+
+The main focus of this script are those 5 points :
+1. All the **GET** requests to the **/anonymous** URL will be allowed to anyone despite their authorization.
+2. All the **GET** requests to the **/admin** URL will only be allowed to the users possessing the `ADMIN` role.
+3. All the **GET** requests to the **/user** URL will only be allowed to the users possessing either the `ADMIN` or the `USER` role, or both.
+4. Any other request of whatever type to other endpoints need to be authenticated with an **Access Token** but it is a optional instruction in this case as we do not have any more accessible endpoints except for those 3.
+
+>[!note]
+>Note that the `hasRole()` instruction prefixes the given parameter with a `"ROLE_"` string notation, so for example if we pass it the `"user"` parameter the security config is going to be searching for a `"ROLE_user"` role. But **we don't need to worry about that**, because our `JwtAuthConverter` class is already doing the work for us by prefixing our keycloak resource roles with the `"ROLE_"` notation.
 
 
 

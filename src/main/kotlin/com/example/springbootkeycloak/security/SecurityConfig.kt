@@ -1,7 +1,6 @@
 package com.example.springbootkeycloak.security
 
 import com.example.springbootkeycloak.security.JwtAuthConverter
-import lombok.RequiredArgsConstructor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 
-@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 class SecurityConfig @Autowired constructor(
