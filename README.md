@@ -322,6 +322,26 @@ Here's how the 3 requests would look in Postman :
 <img src="/img/GET Anonymous.png" alt="GET Anonymous" width="60%"/>
 </div>
 
+The JSON file for the Postman requests is also provided in the repository so if anything is not clear you can just import it and see for yourself.
+
+Now that you're setup you can try to access the **Keycloak Token Endpoint** using the `user1` credentials and then trying to access all 3 of the application endpoints, these would be the expected results :
+
+<div align="center">
+<img src="/img/User1 User Response.png" alt="User1 User Response" width="49%"/>
+<img src="/img/User1 Admin Response.png" alt="User1 Admin Response" width="49%"/>
+<img src="/img/Anonymous Response.png" alt="Anonymous Response" width="60%"/>
+</div>
+
+A new session should also have appeared in the **Sessions** tab of our `web-app-1` client, and if we perform a logout request to the **Keycloak Logout Endpoint** we should see that session disappear.
+
+And then if we access with either the `user2` or `globalAdmin` credentials we should be able to access all 3 of the application endpoints successfully :
+
+<div align="center">
+<img src="/img/User2 User Response.png" alt="User2 User Response" width="49%"/>
+<img src="/img/User2 Admin Response.png" alt="User2 Admin Response" width="49%"/>
+<img src="/img/Anonymous Response.png" alt="Anonymous Response" width="60%"/>
+</div>
+
 
 
 
