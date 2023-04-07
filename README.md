@@ -8,6 +8,10 @@ In the versions of Spring Boot 2.x and onwards the best way to integrate Keycloa
 
 Unfortunately with the advent of Spring Boot 3 most of its classes and method became deprecated, but it's not so much of a problem, as Keycloak still provides a multitude of **endpoints** that can allow us to manually execute authentication tasks.
 
+The biggest advantage of Keycloak is that once you configure it you can just forget about it and start developing your web application, without worrying about the formalities of the standard spring security library.
+
+The user management is good as well, you can create roles and map it to users and give permissions based on roles. It also makes it easier to adapt new authentication mechanisms in the future.
+
 ## Setting Up a Keycloak Server
 To utilize the services that Keycloak provides we firstly have to start a server that for this example will be run locally on the port **8081**.
 
@@ -28,8 +32,8 @@ Its going to be the Administration Console that will allow us to manage the Keyc
 The first step to manage one or more applications is creating a **Realm**. A Realm is basically a group of clients and users under the same "roof" to which are applied a common set of rules. We can also image it as a whole organization that can manage a wide range of web apps (named **Clients**).
 
 <div float=left align="center">
-<img src="/img/Keycloak Administration Console.png" alt="Left Sidebar" width="20%" style="margin-right:15px"/>
-<img src="/img/Keycloak Create Realm.png" alt="Realms List" width="20%" style="margin-left:15px"/>
+<img src="/img/Keycloak Administration Console.png" alt="Left Sidebar" width="30%"/>
+<img src="/img/Keycloak Create Realm.png" alt="Realms List" width="30%"/>
 </div>
 
 Click on the **master** option at the top of left menu, and there it will allow you to create a new realm. 
