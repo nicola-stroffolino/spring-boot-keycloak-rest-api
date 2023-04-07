@@ -21,7 +21,7 @@ Once the compressed file is downloaded you can just unzip it and run the `kc.bat
 
 My command would result : `bin/kc.sh start-dev --http-port=8081`
 
-Now if we reach to the [http://localhost:8081]() URL we should be presented with this :
+Now if we reach to the [http://localhost:8081](http://localhost:8081) URL we should be presented with this :
 
 ![Welcome to Keycloak](./img/Welcome%20to%20Keycloak.png)
 
