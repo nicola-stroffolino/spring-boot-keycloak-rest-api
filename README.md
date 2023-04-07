@@ -317,9 +317,9 @@ To test the application, in my case using **Postman**, we need to declare 3 diff
 
 Here's how the 3 requests would look in Postman :
 <div align="center">
-<img src="/img/GET User.png" alt="GET User" width="40%"/>
-<img src="/img/GET Admin.png" alt="GET Admin" width="40%"/>
-<img src="/img/GET Anonymous.png" alt="GET Anonymous" width="40%"/>
+<img src="/img/GET User.png" alt="GET User" width="49%"/>
+<img src="/img/GET Admin.png" alt="GET Admin" width="49%"/>
+<img src="/img/GET Anonymous.png" alt="GET Anonymous" width="60%"/>
 </div>
 
 
