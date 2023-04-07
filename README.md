@@ -145,7 +145,9 @@ To check if we did everything correctly we can perform a login request for one o
 
 And then if we perform a logout request we should see the sessions tab emptied of the `user1` session :
 
-<img src="img/No Sessions.png" style="mix-blend-mode:screen; filter:invert(1)" width="70%"/>
+<div style="mix-blend-mode:screen; filter:invert(1)">
+<img src="img/No Sessions.png" width="70%"/>
+</div>
 
 ![light|500](img/No%20Sessions.png)
 
