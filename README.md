@@ -149,9 +149,13 @@ And then if we perform a logout request we should see the sessions tab emptied o
 <svg fill="none" viewBox="0 0 600 300" width="600" height="300" xmlns="http://www.w3.org/2000/svg">
   <foreignObject width="100%" height="100%">
     <div xmlns="http://www.w3.org/1999/xhtml">
-		<div style="mix-blend-mode:screen; filter:invert(1)">
-		<img src="img/No Sessions.png" width="70%"/>
-		</div>
+		<style>
+			.inverted {
+				mix-blend-mode:screen;
+				filter:invert(1)
+			}
+		</style>
+		<img src="img/No Sessions.png" class="inverted"/>
     </div>
   </foreignObject>
 </svg>
