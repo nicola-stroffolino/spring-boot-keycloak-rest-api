@@ -1,0 +1,574 @@
+{
+	"info": {
+		"_postman_id": "663c77eb-039b-4c98-a34b-afb93a22529d",
+		"name": "Spring Boot Keycloak",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26695670"
+	},
+	"item": [
+		{
+			"name": "Token Endpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"access_token\", jsonData.access_token);\r",
+							"pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);\r",
+							"pm.collectionVariables.set(\"id_token\", jsonData.id_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "web-app-1",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "globalAdmin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{realmUrl}}/protocol/openid-connect/token",
+					"host": [
+						"{{realmUrl}}"
+					],
+					"path": [
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "user1 - User Role",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "web-app-1",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{realmUrl}}/protocol/openid-connect/token",
+							"host": [
+								"{{realmUrl}}"
+							],
+							"path": [
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-store"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "KEYCLOAK_LOCALE=; Version=1; Comment=Expiring cookie; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0; Path=/realms/SpringBootKeycloak/; HttpOnly"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "KC_RESTART=; Version=1; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0; Path=/realms/SpringBootKeycloak/; HttpOnly"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "3690"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3TTZkZ0ZVcE5WeEFsVUR6SWZVc3BkSWZaR1A4ODlZQVRxWFFsbXA0cDJjIn0.eyJleHAiOjE2ODA2Mzk3NTEsImlhdCI6MTY4MDYzOTQ1MSwianRpIjoiMTA3NmI5NzQtZmE3NS00ZTRkLWI2MDYtMzAwOTRiZThkOGM2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL3JlYWxtcy9TcHJpbmdCb290S2V5Y2xvYWsiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiZDg4Zjk1OWYtOGMzMS00OTJjLTkxNWMtZTI1ZGE1ZWEwNTAwIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoic3ByaW5nYm9vdC1rZXljbG9hay1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiYzViZTk1M2UtZTc0Mi00OWM1LTkxNDEtNjdlMzIyNmQxOTRkIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjgwODIiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImFwcF91c2VyIiwib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXNwcmluZ2Jvb3RrZXljbG9hayIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsic3ByaW5nYm9vdC1rZXljbG9hay1jbGllbnQiOnsicm9sZXMiOlsidXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInNpZCI6ImM1YmU5NTNlLWU3NDItNDljNS05MTQxLTY3ZTMyMjZkMTk0ZCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiVXNlciBGaXJzdCIsInByZWZlcnJlZF91c2VybmFtZSI6InVzZXIxIiwiZ2l2ZW5fbmFtZSI6IlVzZXIiLCJmYW1pbHlfbmFtZSI6IkZpcnN0IiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20ifQ.TPOi0c21a2tV8Co_ZLkSFwJtOk_IFHcWw1CDDfa_adcEwWB8Jmw2-np-wJPQkTYTC9rLhrTV6aDV67jdZgtnC-5hD2SimiWbyTwspou3OYjAsbHzQ7BvTJrWSBNePAdutyyflC4Sjt7SyK8yTWLTDVKZe0Q9W6qU-RTttNh4_XIX-s4Kh3amF86UbizRAT_gXvl6Yctk80iQ3NCRlO5siNBjiWRBhYJCcKIjKiQJtzBodXRhZe5bNyA-D1IugiVbd3n53ckCvAZg3g99SjSVGMTg63_xj5yHo4Ntt1naRw5iEDHcyzaS6Xe-Zh1q-9tM7hZl57w9ocsQtt0go6XLnQ\",\n    \"expires_in\": 300,\n    \"refresh_expires_in\": 1800,\n    \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1OTU5ODQ4MS1kYjA2LTQ4YjMtYjcxNy03NmM3MGFiZTJiZDYifQ.eyJleHAiOjE2ODA2NDEyNTEsImlhdCI6MTY4MDYzOTQ1MSwianRpIjoiYzQwMTYxNGItNzE1ZC00ZDlkLWFjNzQtZGM0YjBmOGNhOWYzIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL3JlYWxtcy9TcHJpbmdCb290S2V5Y2xvYWsiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvcmVhbG1zL1NwcmluZ0Jvb3RLZXljbG9hayIsInN1YiI6ImQ4OGY5NTlmLThjMzEtNDkyYy05MTVjLWUyNWRhNWVhMDUwMCIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJzcHJpbmdib290LWtleWNsb2FrLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJjNWJlOTUzZS1lNzQyLTQ5YzUtOTE0MS02N2UzMjI2ZDE5NGQiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwic2lkIjoiYzViZTk1M2UtZTc0Mi00OWM1LTkxNDEtNjdlMzIyNmQxOTRkIn0.apxqdKJolEaVNIOuXe79mB87A7kvl8W4XECnehwun2I\",\n    \"token_type\": \"Bearer\",\n    \"id_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3TTZkZ0ZVcE5WeEFsVUR6SWZVc3BkSWZaR1A4ODlZQVRxWFFsbXA0cDJjIn0.eyJleHAiOjE2ODA2Mzk3NTEsImlhdCI6MTY4MDYzOTQ1MSwiYXV0aF90aW1lIjowLCJqdGkiOiI2Y2FmMmQwNS1mYTAzLTQ2YWItODM0Yy0xZTAxOGI3NmMwYTYiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvcmVhbG1zL1NwcmluZ0Jvb3RLZXljbG9hayIsImF1ZCI6InNwcmluZ2Jvb3Qta2V5Y2xvYWstY2xpZW50Iiwic3ViIjoiZDg4Zjk1OWYtOGMzMS00OTJjLTkxNWMtZTI1ZGE1ZWEwNTAwIiwidHlwIjoiSUQiLCJhenAiOiJzcHJpbmdib290LWtleWNsb2FrLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJjNWJlOTUzZS1lNzQyLTQ5YzUtOTE0MS02N2UzMjI2ZDE5NGQiLCJhdF9oYXNoIjoicy1yQ0M3alg5Tk5jd1lnZEFDLVdaUSIsImFjciI6IjEiLCJzaWQiOiJjNWJlOTUzZS1lNzQyLTQ5YzUtOTE0MS02N2UzMjI2ZDE5NGQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IlVzZXIgRmlyc3QiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ1c2VyMSIsImdpdmVuX25hbWUiOiJVc2VyIiwiZmFtaWx5X25hbWUiOiJGaXJzdCIsImVtYWlsIjoidXNlcjFAZ21haWwuY29tIn0.FZO0lhH0aq2OAWBYmqmRO5C0Z_QRscr3vxnVbWhyjHa0-N7V1IFOkYbortQYVjwVc35rqjYC2Gqi0ZlIzEXZa6hfxkBmcUpMPDPAGvD-mJtkO1ZmWM5jCVfu1pjafdZBQuPWUIj1erF-sjldrHI8Yh92BuVg5TZSahSzc9Lo14jfUtDp5Cp6nwVqQPtshDOdyZQiN5TdfdxcKStoGGQh3QJGWzuwrf0dYMOotMFK95TM-GwSHmEVWV4b0AUEKPIJjxxRM2-Vk9y7uCTQSD5ENzG7pzu4C2vNWhiueyIXgKiyl6aaT2J1-3CNZo6zuQkM8pUGh_bnchx7N5m8vpp-og\",\n    \"not-before-policy\": 0,\n    \"session_state\": \"c5be953e-e742-49c5-9141-67e3226d194d\",\n    \"scope\": \"openid profile email\"\n}"
+				},
+				{
+					"name": "user2 - User/Admin Role",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "web-app-1",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "user2",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "54321",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{realmUrl}}/protocol/openid-connect/token",
+							"host": [
+								"{{realmUrl}}"
+							],
+							"path": [
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-store"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "KEYCLOAK_LOCALE=; Version=1; Comment=Expiring cookie; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0; Path=/realms/SpringBootKeycloak/; HttpOnly"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "KC_RESTART=; Version=1; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0; Path=/realms/SpringBootKeycloak/; HttpOnly"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "3722"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3TTZkZ0ZVcE5WeEFsVUR6SWZVc3BkSWZaR1A4ODlZQVRxWFFsbXA0cDJjIn0.eyJleHAiOjE2ODA2Mzk3ODEsImlhdCI6MTY4MDYzOTQ4MSwianRpIjoiNGQ0Y2NiYTgtYmFjZC00NmRlLWFmNjMtOTYzMTJlYjJiZTJmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL3JlYWxtcy9TcHJpbmdCb290S2V5Y2xvYWsiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiYTc3N2E5MmItNzlmMS00YTViLWJhMzItMmM4NjQ1MTZjZmU1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoic3ByaW5nYm9vdC1rZXljbG9hay1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiNWY1MzY5YzUtYTllYi00ZWRmLWI3Y2ItOTMyMTU3NGVkNGE0IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjgwODIiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImFwcF91c2VyIiwib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXNwcmluZ2Jvb3RrZXljbG9hayIsInVtYV9hdXRob3JpemF0aW9uIiwiYXBwX2FkbWluIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsic3ByaW5nYm9vdC1rZXljbG9hay1jbGllbnQiOnsicm9sZXMiOlsiYWRtaW4iLCJ1c2VyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwic2lkIjoiNWY1MzY5YzUtYTllYi00ZWRmLWI3Y2ItOTMyMTU3NGVkNGE0IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJVc2VyIFNlY29uZCIsInByZWZlcnJlZF91c2VybmFtZSI6InVzZXIyIiwiZ2l2ZW5fbmFtZSI6IlVzZXIiLCJmYW1pbHlfbmFtZSI6IlNlY29uZCIsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIn0.Oo2c1_6mZDKA1nTwmh9TuJfhY1mJd4JmncwBRAHDvxnQcwDxOYHNZgsrW74s1TH1d4BHRGFIgI2rHvSfk2LK5xm7mFhz855PcEbxc14OCSd0YEIz2818Rtq5XhRVb-7JJrU5yEize1NwnD1Lp-rqENfHgXEDUTD7TGNkxYM3BaHBaJaO5btcB0y0bMaaocPm_N5TMPZpEldMhFRIKcbtXpalMEaEcltMt4HB_agt0DayhL7vjEuns-5TDS1h9ZZRu3N_rrPWv8xlnRcBvcBno2vg6byEStlmtOCQxzlnaR4iyQv1HW_xZrEs9UdQNzlX4tUquSG8KrrrLhrT1-4C5g\",\n    \"expires_in\": 300,\n    \"refresh_expires_in\": 1800,\n    \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1OTU5ODQ4MS1kYjA2LTQ4YjMtYjcxNy03NmM3MGFiZTJiZDYifQ.eyJleHAiOjE2ODA2NDEyODEsImlhdCI6MTY4MDYzOTQ4MSwianRpIjoiM2JmYzIyMzItYzNhYi00NmQyLWE1YWYtZWJkMmU1YTUzODI4IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL3JlYWxtcy9TcHJpbmdCb290S2V5Y2xvYWsiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvcmVhbG1zL1NwcmluZ0Jvb3RLZXljbG9hayIsInN1YiI6ImE3NzdhOTJiLTc5ZjEtNGE1Yi1iYTMyLTJjODY0NTE2Y2ZlNSIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJzcHJpbmdib290LWtleWNsb2FrLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI1ZjUzNjljNS1hOWViLTRlZGYtYjdjYi05MzIxNTc0ZWQ0YTQiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwic2lkIjoiNWY1MzY5YzUtYTllYi00ZWRmLWI3Y2ItOTMyMTU3NGVkNGE0In0.Dphus2mqfRZbTFAk93M415IOZlxvN2vpkqq1qWc9ZkU\",\n    \"token_type\": \"Bearer\",\n    \"id_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3TTZkZ0ZVcE5WeEFsVUR6SWZVc3BkSWZaR1A4ODlZQVRxWFFsbXA0cDJjIn0.eyJleHAiOjE2ODA2Mzk3ODEsImlhdCI6MTY4MDYzOTQ4MSwiYXV0aF90aW1lIjowLCJqdGkiOiJmOWExNzc2MS05MGZmLTQzNTMtOWVhMy02MWI2MmU2NWNkMTUiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvcmVhbG1zL1NwcmluZ0Jvb3RLZXljbG9hayIsImF1ZCI6InNwcmluZ2Jvb3Qta2V5Y2xvYWstY2xpZW50Iiwic3ViIjoiYTc3N2E5MmItNzlmMS00YTViLWJhMzItMmM4NjQ1MTZjZmU1IiwidHlwIjoiSUQiLCJhenAiOiJzcHJpbmdib290LWtleWNsb2FrLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI1ZjUzNjljNS1hOWViLTRlZGYtYjdjYi05MzIxNTc0ZWQ0YTQiLCJhdF9oYXNoIjoiV2Fzc0d3V2Y4TWsxa0JfY1pxQThodyIsImFjciI6IjEiLCJzaWQiOiI1ZjUzNjljNS1hOWViLTRlZGYtYjdjYi05MzIxNTc0ZWQ0YTQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IlVzZXIgU2Vjb25kIiwicHJlZmVycmVkX3VzZXJuYW1lIjoidXNlcjIiLCJnaXZlbl9uYW1lIjoiVXNlciIsImZhbWlseV9uYW1lIjoiU2Vjb25kIiwiZW1haWwiOiJ1c2VyMkBnbWFpbC5jb20ifQ.jFyMiLzRucs-4V7EmyY8HcsXTXP8wDvcp-5qBANZPO81sfn8RcyapoorDoxbxH6gq461ebSkvgFX53T0Y_WtAn_X5FVHR5fFljvj7Dn5RT0dz5qxxAadXRKd8C0cTjJ32yL3w5NQqcLTRYV_keAkF-T0mDpBx2vffx7aBhVAqwB8wAkpOepFU43CNeVCSLONb9Nm7iENQ1OcceEW4YUbdFfOnaDCJ_TV9Cc-nvXIeJURcEEgii29fEgfKF6WgVsNnkgr8uPysPDoWVFMypMMSvgVGQQggL_xq6msNpEBmfg1-v-1HMC-KOTLQpUxudVIBMxhdYeUEGCLKbTgvGXH4A\",\n    \"not-before-policy\": 0,\n    \"session_state\": \"5f5369c5-a9eb-4edf-b7cb-9321574ed4a4\",\n    \"scope\": \"openid profile email\"\n}"
+				},
+				{
+					"name": "globalAdmin - Admin Role",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "web-app-1",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "globalAdmin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{realmUrl}}/protocol/openid-connect/token",
+							"host": [
+								"{{realmUrl}}"
+							],
+							"path": [
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-store"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "KEYCLOAK_LOCALE=; Version=1; Comment=Expiring cookie; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0; Path=/realms/SpringBootKeycloak/; HttpOnly"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "KC_RESTART=; Version=1; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0; Path=/realms/SpringBootKeycloak/; HttpOnly"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "content-length",
+							"value": "3719"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3TTZkZ0ZVcE5WeEFsVUR6SWZVc3BkSWZaR1A4ODlZQVRxWFFsbXA0cDJjIn0.eyJleHAiOjE2ODA2Mzk4NzIsImlhdCI6MTY4MDYzOTU3MiwianRpIjoiNzc3ZjI0ZWItMGFlMy00ZmQxLThmMWUtYzBkMWRkMjRkNTIwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL3JlYWxtcy9TcHJpbmdCb290S2V5Y2xvYWsiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNTdiM2Y1NjItODlmZi00ZTQ3LWE0MDYtOTI0ZjczZDY0NmI0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoic3ByaW5nYm9vdC1rZXljbG9hay1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiNGRkM2VhNmYtNDhhMS00ZWIyLWI1MzEtM2Q3Y2QxNDg3NWI3IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjgwODIiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1zcHJpbmdib290a2V5Y2xvYWsiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImFwcF9hZG1pbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InNwcmluZ2Jvb3Qta2V5Y2xvYWstY2xpZW50Ijp7InJvbGVzIjpbImFkbWluIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwic2lkIjoiNGRkM2VhNmYtNDhhMS00ZWIyLWI1MzEtM2Q3Y2QxNDg3NWI3IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJBZG1pbiBHbG9iYWwiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnbG9iYWxhZG1pbiIsImdpdmVuX25hbWUiOiJBZG1pbiIsImZhbWlseV9uYW1lIjoiR2xvYmFsIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20ifQ.JDyE-dBnxWzByQnHRFA2CYe-7oYUimBUDaFF9KmzJtRCI6nUv5qU_GTRAYyGtNkT--32Z69E8tSGtMymcpHBZARYQJz5b0fH1M3NaBHf1NdRTTp4OkXHs54LlENEmTjaiJjKjFu9VakA8sMWJG0ZEjpYXTKhq7G4xkVwoFxiMyEdmQDAwHrI_ZBX-XvEwWRr-NpUj6Fy0ZnRDjcPhDrzOjvKHMy92_DGRjhc_apMJ0EvI1echY7S5yrqWXVwDOiNoSTka4YwuyzotIuqR3t5P8M01uAyVEC2bZ5OhmERS9inxle_gOOVNv-lX_I_gJ6TtbtROPf9QMRqFr5blKaZNw\",\n    \"expires_in\": 300,\n    \"refresh_expires_in\": 1800,\n    \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1OTU5ODQ4MS1kYjA2LTQ4YjMtYjcxNy03NmM3MGFiZTJiZDYifQ.eyJleHAiOjE2ODA2NDEzNzIsImlhdCI6MTY4MDYzOTU3MiwianRpIjoiMmNjYWIwZjItZDVlMi00ZTQ0LWI1NmItYWI4ZGI4NDE1YTI4IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxL3JlYWxtcy9TcHJpbmdCb290S2V5Y2xvYWsiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvcmVhbG1zL1NwcmluZ0Jvb3RLZXljbG9hayIsInN1YiI6IjU3YjNmNTYyLTg5ZmYtNGU0Ny1hNDA2LTkyNGY3M2Q2NDZiNCIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJzcHJpbmdib290LWtleWNsb2FrLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI0ZGQzZWE2Zi00OGExLTRlYjItYjUzMS0zZDdjZDE0ODc1YjciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwic2lkIjoiNGRkM2VhNmYtNDhhMS00ZWIyLWI1MzEtM2Q3Y2QxNDg3NWI3In0.uip6CPRRASXDH2lAgk4V65bEAbOT7nUG0T1SH_L1-4w\",\n    \"token_type\": \"Bearer\",\n    \"id_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3TTZkZ0ZVcE5WeEFsVUR6SWZVc3BkSWZaR1A4ODlZQVRxWFFsbXA0cDJjIn0.eyJleHAiOjE2ODA2Mzk4NzIsImlhdCI6MTY4MDYzOTU3MiwiYXV0aF90aW1lIjowLCJqdGkiOiI3MjFmOWM2YS1kNzE5LTQ0YzAtYTY3OC1jOGQ0NzE2NTlmZjgiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODEvcmVhbG1zL1NwcmluZ0Jvb3RLZXljbG9hayIsImF1ZCI6InNwcmluZ2Jvb3Qta2V5Y2xvYWstY2xpZW50Iiwic3ViIjoiNTdiM2Y1NjItODlmZi00ZTQ3LWE0MDYtOTI0ZjczZDY0NmI0IiwidHlwIjoiSUQiLCJhenAiOiJzcHJpbmdib290LWtleWNsb2FrLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI0ZGQzZWE2Zi00OGExLTRlYjItYjUzMS0zZDdjZDE0ODc1YjciLCJhdF9oYXNoIjoickNnS2JWQUI0TVFLSDdsWWxWY3NMdyIsImFjciI6IjEiLCJzaWQiOiI0ZGQzZWE2Zi00OGExLTRlYjItYjUzMS0zZDdjZDE0ODc1YjciLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkFkbWluIEdsb2JhbCIsInByZWZlcnJlZF91c2VybmFtZSI6Imdsb2JhbGFkbWluIiwiZ2l2ZW5fbmFtZSI6IkFkbWluIiwiZmFtaWx5X25hbWUiOiJHbG9iYWwiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSJ9.CxuxZ8mV4lD9GbgLUMVTiPs0PqU7rZSQxgkpxYsJogU8rWXY7NDMgTmYfhXr408rIOLAvtoUSgZiwpzlznf1O6FLj9WjsvO9GuZJk0GHaipT17vmXHs4NJzB2GqjN8QUeRkKAIxIetq8UqCQ2TrALIAbtohPaKPiP4J60VPTZzQL3WbvzVTNpjTPqwS5jaaC9hI_ekNU8R8oLjX0Tf4-Yfw-x9QaJU1TtWy1xdGCPgbXYjcYQqYO8PoN3uDfThXVJkKIyNOw44ZoRMcq24aT2rysasmr6YYm8_9MczZYxOdDZ4OGF-5CsZC54opBVRxr-6OXCMr-wZBakCIRPTcL4Q\",\n    \"not-before-policy\": 0,\n    \"session_state\": \"4dd3ea6f-48a1-4eb2-b531-3d7cd14875b7\",\n    \"scope\": \"openid profile email\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Refresh Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"access_token\", jsonData.access_token);\r",
+							"pm.collectionVariables.set(\"id_token\", jsonData.id_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "web-app-1",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "{{refresh_token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{realmUrl}}/protocol/openid-connect/token",
+					"host": [
+						"{{realmUrl}}"
+					],
+					"path": [
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Public Content",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{appUrl}}/api/anonymous",
+					"host": [
+						"{{appUrl}}"
+					],
+					"path": [
+						"api",
+						"anonymous"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Protected Content",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{appUrl}}/api/user",
+					"host": [
+						"{{appUrl}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Protected Content",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{appUrl}}/api/admin",
+					"host": [
+						"{{appUrl}}"
+					],
+					"path": [
+						"api",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout Endpoint",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{realmUrl}}/protocol/openid-connect/logout?id_token_hint={{id_token}}",
+					"host": [
+						"{{realmUrl}}"
+					],
+					"path": [
+						"protocol",
+						"openid-connect",
+						"logout"
+					],
+					"query": [
+						{
+							"key": "id_token_hint",
+							"value": "{{id_token}}"
+						},
+						{
+							"key": "post_logout_redirect_uri",
+							"value": "{{appUrl}}/anonymous",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "realmUrl",
+			"value": "http://localhost:8081/realms/SpringBootKeycloak",
+			"type": "string"
+		},
+		{
+			"key": "appUrl",
+			"value": "http://localhost:8080/",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		},
+		{
+			"key": "id_token",
+			"value": ""
+		}
+	]
+}
