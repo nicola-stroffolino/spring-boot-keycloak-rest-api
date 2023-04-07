@@ -28,8 +28,9 @@ Its going to be the Administration Console that will allow us to manage the Keyc
 The first step to manage one or more applications is creating a **Realm**. A Realm is basically a group of clients and users under the same "roof" to which are applied a common set of rules. We can also image it as a whole organization that can manage a wide range of web apps (named **Clients**).
 
 <div float=left align="center">
-<img src="/img/Keycloak Administration Console.png" width="20%"/>
-<img src="/img/Keycloak Create Realm.png" width="20%"/>
+<img src="/img/Keycloak Administration Console.png" alt="Left Sidebar" width="20%"/>
+<span style="margin:30px"></span>
+<img src="/img/Keycloak Create Realm.png" alt="Realms List" width="20%"/>
 </div>
 
 Click on the **master** option at the top of left menu, and there it will allow you to create a new realm. 
@@ -185,11 +186,11 @@ server:
 ```
 
 Where :
-- **issuer-uri** $\rightarrow$ Is the issuer defined in the **OpenID Endpoint Configuration** described in the [Exploring Keycloak Endpoints](#Exploring%20Keycloak%20Endpoints) chapter. This will be the endpoint that our application will use to validate the JWT tokens.
+- **issuer-uri** $\rightarrow$ Is the issuer defined in the **OpenID Endpoint Configuration** described in the [Exploring Keycloak Endpoints](#Exploring-Keycloak-Endpoints) chapter. This will be the endpoint that our application will use to validate the JWT tokens.
   >**Warning**<br>The authorization server, in this case Keycloak, **must** be up and running, or else you would not even be able to start the application.
 
 - **jwk-set-uri** $\rightarrow$ Is the URI of the the authorization server's endpoint exposing public keys, but it's optional, the only difference with the **issuer-uri** is that the application would actually start if we only specify this field. As you can see this uses the base URI of the issuer uri.
-- **resource-id** $\rightarrow$ Is basically just the client ID. It will be user later on to specify to which web app the resource roles belong to, and as you can see in the [Accessing the Token Endpoint](#Accessing%20the%20Token%20Endpoint) chapter in the JWT decoded token we can see that we're exposing only the resource roles of the `web-app-1` client.
+- **resource-id** $\rightarrow$ Is basically just the client ID. It will be user later on to specify to which web app the resource roles belong to, and as you can see in the [Accessing the Token Endpoint](#Accessing-The-Token-Endpoint) chapter in the JWT decoded token we can see that we're exposing only the resource roles of the `web-app-1` client.
 - **principal-attribute** $\rightarrow$ Is the parameter from which we will be obtaining the authenticated user username.
 
 The other attributes should be pretty self explanatory.
@@ -228,7 +229,7 @@ class TestController {
 For the **/admin** and **/user** paths we can see that we're extracting the user information from the `Principal` given by the security context and printing it subsequently in a `ResponseEntity.ok` (Code 200) body. This is still a very basic approach to the `ResponseBody` of a REST API and it's just for the sake of demonstration.
 
 ### The JWT Authentication Converter
-With this JWT Converter we'll be creating some custom claims in our JWT that will contain the **user roles** in the list of the granted authorities, so that they will be able to be recognized by our future [Security Configuration](#The%20Security%20Configuration).
+With this JWT Converter we'll be creating some custom claims in our JWT that will contain the **user roles** in the list of the granted authorities, so that they will be able to be recognized by our future [Security Configuration](#The-Security-Configuration).
 
 ```kotlin
 @Component  
@@ -308,10 +309,19 @@ The main focus of this script are those 5 points :
 2. All the **GET** requests to the **/admin** URL will only be allowed to the users possessing the `ADMIN` role.
 3. All the **GET** requests to the **/user** URL will only be allowed to the users possessing either the `ADMIN` or the `USER` role, or both.
 4. Any other request of whatever type to other endpoints need to be authenticated with an **Access Token** but it is a optional instruction in this case as we do not have any more accessible endpoints except for those 3.
+5. This is out `JwtAuthConverter` in charge of the duties described in the [JWT Authentication Converter](#The-JWT-Authentication-Converter) chapter.
 
 >**Note**<br>The `hasRole()` instruction prefixes the given parameter with a `"ROLE_"` string notation, so for example if we pass it the `"user"` parameter the security config is going to be searching for a `"ROLE_user"` role. But **we don't need to worry about that**, because our `JwtAuthConverter` class is already doing the work for us by prefixing our keycloak resource roles with the `"ROLE_"` notation.
 
+## Testing the Application
+To test the application, in my case using **Postman**, we need to declare 3 different **GET** requests to our application endpoints. To access the **user** and **admin** endpoints we must specify the header of the request the `Authorization` key with the `Bearer {access_token}` value.
 
+Here's how the 3 requests would look in Postman :
+<div align="center">
+<img src="/img/GET Anonymous.png" alt="GET Anonymous" width="30%"/>
+<img src="/img/GET User.png" alt="GET User" width="30%"/>
+<img src="/img/GET Admin.png" alt="GET Admin" width="30%"/>
+</div>
 
 
 
