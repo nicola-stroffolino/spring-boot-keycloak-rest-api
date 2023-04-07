@@ -186,8 +186,25 @@ server:
 
 Where :
 - **issuer-uri** $\rightarrow$ Is the issuer defined in the **OpenID Endpoint Configuration** described in the [Exploring Keycloak Endpoints](#Exploring%20Keycloak%20Endpoints) chapter. This will be the endpoint that our application will use to validate the JWT tokens.
-  >[!warning]
+  >**Note**
   >The authorization server, in this case Keycloak, **must** be up and running, or else you would not even be able to start the application.
+
+<div data-callout="warning" class="callout">
+<div class="callout-title">
+<div class="callout-icon">
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-alert-triangle">
+	<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+	<line x1="12" y1="9" x2="12" y2="13"/>
+	<line x1="12" y1="17" x2="12.01" y2="17"/>
+	</svg>
+</div>
+<div class="callout-title-inner">Warning</div>
+</div>
+<div class="callout-content">
+	<p>The authorization server, in this case Keycloak, <strong>must</strong> be up and running, or else you would not even be able to start the application.
+	</p>
+</div>
+</div>
 
 - **jwk-set-uri** $\rightarrow$ Is the URI of the the authorization server's endpoint exposing public keys, but it's optional, the only difference with the **issuer-uri** is that the application would actually start if we only specify this field. As you can see this uses the base URI of the issuer uri.
 - **resource-id** $\rightarrow$ Is basically just the client ID. It will be user later on to specify to which web app the resource roles belong to, and as you can see in the [Accessing the Token Endpoint](#Accessing%20the%20Token%20Endpoint) chapter in the JWT decoded token we can see that we're exposing only the resource roles of the `web-app-1` client.
