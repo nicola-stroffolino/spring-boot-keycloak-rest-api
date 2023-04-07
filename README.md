@@ -145,9 +145,18 @@ To check if we did everything correctly we can perform a login request for one o
 
 And then if we perform a logout request we should see the sessions tab emptied of the `user1` session :
 
-<div style="mix-blend-mode:screen; filter:invert(1)">
-<img src="img/No Sessions.png" width="70%"/>
-</div>
+
+<svg fill="none" viewBox="0 0 600 300" width="600" height="300" xmlns="http://www.w3.org/2000/svg">
+  <foreignObject width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+		<div style="mix-blend-mode:screen; filter:invert(1)">
+		<img src="img/No Sessions.png" width="70%"/>
+		</div>
+    </div>
+  </foreignObject>
+</svg>
+
+
 
 ![light|500](img/No%20Sessions.png)
 
