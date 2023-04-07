@@ -155,6 +155,7 @@ And then if we perform a logout request we should see the sessions tab emptied o
 				filter:invert(1)
 			}
 		</style>
+		
 		<img src="img/No Sessions.png" class="inverted"/>
     </div>
   </foreignObject>
