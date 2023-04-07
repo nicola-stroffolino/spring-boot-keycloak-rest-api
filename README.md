@@ -186,8 +186,7 @@ server:
 
 Where :
 - **issuer-uri** $\rightarrow$ Is the issuer defined in the **OpenID Endpoint Configuration** described in the [Exploring Keycloak Endpoints](#Exploring%20Keycloak%20Endpoints) chapter. This will be the endpoint that our application will use to validate the JWT tokens.
-  > **Warning**
-  > The authorization server, in this case Keycloak, **must** be up and running, or else you would not even be able to start the application.
+  >**Warning**<br>The authorization server, in this case Keycloak, **must** be up and running, or else you would not even be able to start the application.
 
 - **jwk-set-uri** $\rightarrow$ Is the URI of the the authorization server's endpoint exposing public keys, but it's optional, the only difference with the **issuer-uri** is that the application would actually start if we only specify this field. As you can see this uses the base URI of the issuer uri.
 - **resource-id** $\rightarrow$ Is basically just the client ID. It will be user later on to specify to which web app the resource roles belong to, and as you can see in the [Accessing the Token Endpoint](#Accessing%20the%20Token%20Endpoint) chapter in the JWT decoded token we can see that we're exposing only the resource roles of the `web-app-1` client.
@@ -310,8 +309,9 @@ The main focus of this script are those 5 points :
 3. All the **GET** requests to the **/user** URL will only be allowed to the users possessing either the `ADMIN` or the `USER` role, or both.
 4. Any other request of whatever type to other endpoints need to be authenticated with an **Access Token** but it is a optional instruction in this case as we do not have any more accessible endpoints except for those 3.
 
-> **Note**
-> The `hasRole()` instruction prefixes the given parameter with a `"ROLE_"` string notation, so for example if we pass it the `"user"` parameter the security config is going to be searching for a `"ROLE_user"` role. But **we don't need to worry about that**, because our `JwtAuthConverter` class is already doing the work for us by prefixing our keycloak resource roles with the `"ROLE_"` notation.
+>**Note**<br>The `hasRole()` instruction prefixes the given parameter with a `"ROLE_"` string notation, so for example if we pass it the `"user"` parameter the security config is going to be searching for a `"ROLE_user"` role. But **we don't need to worry about that**, because our `JwtAuthConverter` class is already doing the work for us by prefixing our keycloak resource roles with the `"ROLE_"` notation.
+
+
 
 
 
